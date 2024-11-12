@@ -59,8 +59,6 @@ isort-reformat:
 
 mypy:
 	mypy .
-	# fix mypy errors and then run mypy over tests/ directory
-	# mypy tests
 
 project = sisyphus
 
