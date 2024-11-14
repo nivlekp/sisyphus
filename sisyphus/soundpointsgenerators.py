@@ -82,3 +82,20 @@ class BimodalSoundPointsGenerator(pang.SoundPointsGenerator):
         distribution = np.array([self._mixing_parameter, 1 - self._mixing_parameter])
         mode = self._rng.choice(modes, p=distribution)
         return self._rng.random() * mode
+
+
+class SoundPointsGenerator(pang.SoundPointsGenerator):
+    def __init__(
+        self,
+        note_mean_duration: float,
+        phrase_mean_duration: float,
+        rest_mean_duration: float,
+        seed,
+    ):
+        self._note_mean_duration = note_mean_duration
+        self._phrase_mean_duration = phrase_mean_duration
+        self._rest_mean_duraiton = rest_mean_duration
+        self._random_number_generator = np.random.default_rng(seed)
+
+    def __call__(self, sequence_duration: float) -> list[pang.SoundPoint]:
+        raise NotImplementedError
