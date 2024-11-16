@@ -65,3 +65,8 @@ jobs:
         make flake8
         make isort-check
         make mypy
+    - name: Test Segments
+      run: |
+        export PATH=/tmp/lilypond-${LILYPOND_VERSION}/bin:/home/runner/bin:$PATH
+        export PANG_PATH=${PANG_PATH}
+        make test-sections
