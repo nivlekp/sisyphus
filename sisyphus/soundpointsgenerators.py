@@ -2,29 +2,6 @@ import numpy as np
 import pang
 
 
-def _generate_phrase(
-    mean_duration: float,
-    pitches_set: set[int],
-    sequence_duration: float,
-    random_number_generator: np.random.Generator,
-) -> list[pang.SoundPoint]:
-    current_duration = 0.0
-    sound_points: list[pang.SoundPoint] = []
-    while current_duration < sequence_duration:
-        note_duration = mean_duration
-        if current_duration + note_duration >= sequence_duration:
-            break
-        sound_points.append(
-            pang.SoundPoint(
-                current_duration,
-                note_duration,
-                int(random_number_generator.choice(list(pitches_set))),
-            )
-        )
-        current_duration += note_duration
-    return sound_points
-
-
 class SoundPointsGenerator(pang.SoundPointsGenerator):
     def __init__(
         self,
@@ -71,3 +48,36 @@ class SoundPointsGenerator(pang.SoundPointsGenerator):
                 + self._rest_mean_duration
             )
         return sound_points
+
+
+def _generate_phrase(
+    mean_duration: float,
+    pitches_set: set[int],
+    sequence_duration: float,
+    random_number_generator: np.random.Generator,
+) -> list[pang.SoundPoint]:
+    current_duration = 0.0
+    sound_points: list[pang.SoundPoint] = []
+    pitch: int | None = None
+    while current_duration < sequence_duration:
+        note_duration = mean_duration
+        if current_duration + note_duration >= sequence_duration:
+            break
+        pitch = _generate_next_pitch(pitch, pitches_set, random_number_generator)
+        sound_points.append(pang.SoundPoint(current_duration, note_duration, pitch))
+        current_duration += note_duration
+    return sound_points
+
+
+def _generate_next_pitch(
+    pitch: int | None,
+    pitches_set: set[int],
+    random_number_generator: np.random.Generator,
+) -> int:
+    if pitch is None:
+        return int(random_number_generator.choice(list(pitches_set)))
+    weights = np.exp(-np.abs(np.array(pitches_set) - pitch) / 2.0)
+    weights[np.array(pitches_set) == pitch] *= 0.25
+    return int(
+        random_number_generator.choice(list(pitches_set), p=weights / weights.sum())
+    )
