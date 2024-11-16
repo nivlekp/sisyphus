@@ -14,8 +14,8 @@ def generate_first_sequence() -> pang.Sequence:
     ).rotate(n=1)
     pitch_set = pang.gen_pitches_from_sieve(sieve=sieve, origin=0, low=-7, high=24)
     sound_points_generator = SoundPointsGenerator(
-        0.3,
-        3,
+        0.2,
+        1,
         1,
         pitch_set,
         seed=6899778665656846847236458726385,
@@ -34,8 +34,6 @@ def main() -> None:
     )
     search_tree = nauert.UnweightedSearchTree(
         definition={
-            2: {2: None, 3: None},
-            3: {2: None},
             5: None,
         }
     )

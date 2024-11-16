@@ -11,7 +11,7 @@ def _generate_phrase(
     current_duration = 0.0
     sound_points: list[pang.SoundPoint] = []
     while current_duration < sequence_duration:
-        note_duration = random_number_generator.exponential(mean_duration)
+        note_duration = mean_duration
         if current_duration + note_duration >= sequence_duration:
             break
         sound_points.append(
@@ -50,23 +50,24 @@ class SoundPointsGenerator(pang.SoundPointsGenerator):
             phrase_duration = self._random_number_generator.exponential(
                 self._phrase_mean_duration
             )
-            generated_sound_points = _generate_phrase(
-                self._note_mean_duration,
-                self._pitches_set,
-                phrase_duration,
-                self._random_number_generator,
-            )
+            if phrase_duration + duration >= sequence_duration:
+                break
             sound_points.extend(
                 [
                     pang.SoundPoint.from_sound_point(
                         sound_point, instance=sound_point.instance + duration
                     )
-                    for sound_point in generated_sound_points
+                    for sound_point in _generate_phrase(
+                        self._note_mean_duration,
+                        self._pitches_set,
+                        phrase_duration,
+                        self._random_number_generator,
+                    )
                 ]
             )
             duration = (
                 sound_points[-1].instance
                 + sound_points[-1].duration
-                + self._random_number_generator.exponential(self._rest_mean_duration)
+                + self._rest_mean_duration
             )
         return sound_points
