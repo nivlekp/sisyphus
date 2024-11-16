@@ -73,6 +73,7 @@ check:
 	make black-check
 	make flake8
 	make isort-check
+	make mypy
 
 test:
 	make black-check
