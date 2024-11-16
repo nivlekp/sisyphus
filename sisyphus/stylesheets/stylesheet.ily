@@ -4,7 +4,7 @@
 \version "2.25.16"
 \language "english"
 
-#(set-default-paper-size "a4landscape")
+#(set-default-paper-size "a4")
 #(set-global-staff-size 16)
 
 %{
