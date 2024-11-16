@@ -8,7 +8,7 @@ from sisyphus import library
 from sisyphus.soundpointsgenerators import SoundPointsGenerator
 
 
-def generate_first_sequence() -> pang.Sequence:
+def generate_sequence() -> pang.Sequence:
     sieve = abjad.Pattern(
         indices=library.THIRD_MODE_OF_LIMITED_TRANSPOSITION, period=12
     ).rotate(n=1)
@@ -27,24 +27,15 @@ def generate_first_sequence() -> pang.Sequence:
 
 def main() -> None:
     score = library.make_empty_score()
-    sequence = pang.Sequence.from_sequences(
-        [
-            generate_first_sequence(),
-        ]
-    )
-    search_tree = nauert.UnweightedSearchTree(
-        definition={
-            5: None,
-        }
-    )
-    tempo = abjad.MetronomeMark(
-        abjad.Duration(1, 4), fractions.Fraction(78), decimal=True
-    )
     q_schema = nauert.MeasurewiseQSchema(
-        search_tree=search_tree, tempo=tempo, time_signature=(4, 4)
+        search_tree=nauert.UnweightedSearchTree(definition={5: None}),
+        tempo=abjad.MetronomeMark(
+            abjad.Duration(1, 4), fractions.Fraction(78), decimal=True
+        ),
+        time_signature=(4, 4),
     )
     quantizing_metadata = pang.populate_voices_from_sequence(
-        sequence,
+        generate_sequence(),
         (
             pang.VoiceSpecification(
                 score[library.VOICE_NAME],
