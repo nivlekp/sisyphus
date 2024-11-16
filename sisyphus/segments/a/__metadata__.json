@@ -1,15 +1,15 @@
 {
-    "duration": 33.84615384615385,
+    "duration": 30.76923076923077,
     "last_metronome_mark": {
         "reference_duration": "1/4",
         "units_per_minute": 78.0
     },
     "last_time_signature": "4/4",
-    "empty_beatspan": "7/8",
+    "empty_beatspan": "9/16",
     "per_voice_metadata": {
         "Voice": {
-            "number_of_all_discarded_q_events": 2,
-            "number_of_discarded_pitched_q_events": 0
+            "number_of_all_discarded_q_events": 33,
+            "number_of_discarded_pitched_q_events": 26
         }
     }
 }

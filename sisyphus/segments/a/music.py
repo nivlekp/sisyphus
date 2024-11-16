@@ -5,21 +5,19 @@ import pang
 from abjadext import nauert
 
 from sisyphus import library
-from sisyphus.soundpointsgenerators import BimodalSoundPointsGenerator
+from sisyphus.soundpointsgenerators import SoundPointsGenerator
 
 
-def generate_first_sequence():
+def generate_first_sequence() -> pang.Sequence:
     sieve = abjad.Pattern(
         indices=library.THIRD_MODE_OF_LIMITED_TRANSPOSITION, period=12
     ).rotate(n=1)
-    pitch_set = pang.gen_pitches_from_sieve(sieve=sieve, origin=0, low=-32, high=6)
-    sound_points_generator = BimodalSoundPointsGenerator(
-        arrival_rates=(4.0, 1.0),
-        mixing_parameter=0.7,
-        service_time_minimum=0.15,
-        service_rate_lambda=4,
-        pitch_set=pitch_set,
-        average_intensity=2,
+    pitch_set = pang.gen_pitches_from_sieve(sieve=sieve, origin=0, low=-7, high=24)
+    sound_points_generator = SoundPointsGenerator(
+        0.3,
+        3,
+        1,
+        pitch_set,
         seed=6899778665656846847236458726385,
     )
     return pang.Sequence.from_sound_points_generator(
@@ -27,7 +25,7 @@ def generate_first_sequence():
     )
 
 
-def main():
+def main() -> None:
     score = library.make_empty_score()
     sequence = pang.Sequence.from_sequences(
         [
