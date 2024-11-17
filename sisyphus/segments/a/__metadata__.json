@@ -5,10 +5,10 @@
         "units_per_minute": 78.0
     },
     "last_time_signature": "4/4",
-    "empty_beatspan": "15/16",
+    "empty_beatspan": "11/16",
     "per_voice_metadata": {
         "Voice": {
-            "number_of_all_discarded_q_events": 18,
+            "number_of_all_discarded_q_events": 3,
             "number_of_discarded_pitched_q_events": 0
         }
     }
