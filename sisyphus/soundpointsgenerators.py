@@ -6,12 +6,20 @@ class SoundPointsGenerator(pang.SoundPointsGenerator):
     def __init__(
         self,
         note_durations: tuple[float, ...],
+        note_duration_distribution: tuple[float, ...],
         phrase_mean_duration: float,
         rest_mean_duration: float,
         pitches_set: set[int],
         seed: int,
     ) -> None:
+        if len(note_durations) != len(note_duration_distribution):
+            raise ValueError(
+                "note durations and their distribution should be of the same length"
+            )
+        if sum(note_duration_distribution) != 1.0:
+            raise ValueError("note duration distribution should sum up to 1")
         self._note_durations = note_durations
+        self._note_duration_distribution = note_duration_distribution
         self._phrase_mean_duration = phrase_mean_duration
         self._rest_mean_duration = rest_mean_duration
         self._pitches_set = pitches_set
@@ -36,6 +44,7 @@ class SoundPointsGenerator(pang.SoundPointsGenerator):
                     )
                     for sound_point in _generate_phrase(
                         self._note_durations,
+                        self._note_duration_distribution,
                         self._pitches_set,
                         phrase_duration,
                         self._random_number_generator,
@@ -52,6 +61,7 @@ class SoundPointsGenerator(pang.SoundPointsGenerator):
 
 def _generate_phrase(
     durations: tuple[float, ...],
+    note_duration_distribution: tuple[float, ...],
     pitches_set: set[int],
     sequence_duration: float,
     random_number_generator: np.random.Generator,
@@ -60,7 +70,9 @@ def _generate_phrase(
     sound_points: list[pang.SoundPoint] = []
     pitch: int | None = None
     while current_duration < sequence_duration:
-        note_duration = random_number_generator.choice(durations)
+        note_duration = random_number_generator.choice(
+            durations, p=note_duration_distribution
+        )
         if current_duration + note_duration >= sequence_duration:
             break
         pitch = _generate_next_pitch(pitch, pitches_set, random_number_generator)
