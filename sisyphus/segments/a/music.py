@@ -14,7 +14,7 @@ def generate_sequence() -> pang.Sequence:
     ).rotate(n=1)
     pitch_set = pang.gen_pitches_from_sieve(sieve=sieve, origin=0, low=-7, high=24)
     sound_points_generator = SoundPointsGenerator(
-        (0.1538,),
+        (0.1538, 0.3076),
         1,
         1,
         pitch_set,
