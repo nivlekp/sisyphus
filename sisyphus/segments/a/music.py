@@ -8,24 +8,6 @@ from sisyphus import library
 from sisyphus.soundpointsgenerators import SoundPointsGenerator
 
 
-def generate_sequence() -> pang.Sequence:
-    sieve = abjad.Pattern(
-        indices=library.THIRD_MODE_OF_LIMITED_TRANSPOSITION, period=12
-    ).rotate(n=1)
-    pitch_set = pang.gen_pitches_from_sieve(sieve=sieve, origin=0, low=-7, high=24)
-    sound_points_generator = SoundPointsGenerator(
-        (0.1538, 0.3076),
-        (0.7, 0.3),
-        1,
-        1,
-        pitch_set,
-        seed=6899778665656846847236458726385,
-    )
-    return pang.Sequence.from_sound_points_generator(
-        sound_points_generator=sound_points_generator, sequence_duration=30
-    )
-
-
 def main() -> None:
     score = library.make_empty_score()
     q_schema = nauert.MeasurewiseQSchema(
@@ -36,7 +18,13 @@ def main() -> None:
         time_signature=(4, 4),
     )
     quantizing_metadata = pang.populate_voices_from_sequence(
-        generate_sequence(),
+        pang.Sequence.from_sequences(
+            (
+                _generate_first_sequence(),
+                _generate_second_sequence(),
+                _generate_third_sequence(),
+            )
+        ),
         (
             pang.VoiceSpecification(
                 score[library.VOICE_NAME],
@@ -47,6 +35,69 @@ def main() -> None:
     )
     metadata = pang.build.collect_metadata(score, quantizing_metadata)
     pang.build.persist(score, metadata)
+
+
+def _generate_first_sequence() -> pang.Sequence:
+    return pang.Sequence.from_sound_points_generator(
+        sound_points_generator=SoundPointsGenerator(
+            (0.1538, 0.3076),
+            (0.7, 0.3),
+            1,
+            1,
+            pang.gen_pitches_from_sieve(
+                abjad.Pattern(
+                    indices=library.THIRD_MODE_OF_LIMITED_TRANSPOSITION, period=12
+                ).rotate(n=1),
+                origin=0,
+                low=-7,
+                high=24,
+            ),
+            seed=6899778665656846847236458726385,
+        ),
+        sequence_duration=20,
+    )
+
+
+def _generate_second_sequence() -> pang.Sequence:
+    return pang.Sequence.from_sound_points_generator(
+        sound_points_generator=SoundPointsGenerator(
+            (0.1538, 0.3076),
+            (0.7, 0.3),
+            1,
+            1,
+            pang.gen_pitches_from_sieve(
+                abjad.Pattern(
+                    indices=library.THIRD_MODE_OF_LIMITED_TRANSPOSITION, period=12
+                ).rotate(n=2),
+                origin=0,
+                low=-7,
+                high=24,
+            ),
+            seed=928374982739827398,
+        ),
+        sequence_duration=20,
+    )
+
+
+def _generate_third_sequence() -> pang.Sequence:
+    return pang.Sequence.from_sound_points_generator(
+        sound_points_generator=SoundPointsGenerator(
+            (0.1538, 0.3076),
+            (0.7, 0.3),
+            1,
+            1,
+            pang.gen_pitches_from_sieve(
+                abjad.Pattern(
+                    indices=library.THIRD_MODE_OF_LIMITED_TRANSPOSITION, period=12
+                ).rotate(n=0),
+                origin=0,
+                low=-7,
+                high=24,
+            ),
+            seed=8346865238658648254529,
+        ),
+        sequence_duration=20,
+    )
 
 
 if __name__ == "__main__":
