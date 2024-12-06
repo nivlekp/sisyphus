@@ -61,10 +61,7 @@ jobs:
     - name: Checks and Tests
       run: |
         export PATH=/tmp/lilypond-${LILYPOND_VERSION}/bin:/home/runner/bin:$PATH
-        make black-check
-        make flake8
-        make isort-check
-        make mypy
+        make test
     - name: Test Segments
       run: |
         export PATH=/tmp/lilypond-${LILYPOND_VERSION}/bin:/home/runner/bin:$PATH
