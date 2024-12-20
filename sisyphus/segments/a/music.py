@@ -43,6 +43,7 @@ def _generate_first_sequence() -> pang.Sequence:
             (0.1538, 0.3076),
             (0.7, 0.3),
             1,
+            0.3076,
             1,
             pang.gen_pitches_from_sieve(
                 abjad.Pattern(
@@ -64,6 +65,7 @@ def _generate_second_sequence() -> pang.Sequence:
             (0.1538, 0.3076),
             (0.7, 0.3),
             1,
+            0.3076,
             1,
             pang.gen_pitches_from_sieve(
                 abjad.Pattern(
@@ -85,6 +87,7 @@ def _generate_third_sequence() -> pang.Sequence:
             (0.1538, 0.3076),
             (0.7, 0.3),
             1,
+            0.3076,
             1,
             pang.gen_pitches_from_sieve(
                 abjad.Pattern(
