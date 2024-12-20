@@ -8,6 +8,7 @@ class SoundPointsGenerator(pang.SoundPointsGenerator):
         note_durations: tuple[float, ...],
         note_duration_distribution: tuple[float, ...],
         phrase_mean_duration: float,
+        phrase_minimum_duration: float,
         rest_mean_duration: float,
         pitches_set: set[int],
         seed: int,
@@ -21,6 +22,7 @@ class SoundPointsGenerator(pang.SoundPointsGenerator):
         self._note_durations = note_durations
         self._note_duration_distribution = note_duration_distribution
         self._phrase_mean_duration = phrase_mean_duration
+        self._phrase_minimum_duration = phrase_minimum_duration
         self._rest_mean_duration = rest_mean_duration
         self._pitches_set = pitches_set
         self._random_number_generator = np.random.default_rng(seed)
@@ -32,8 +34,11 @@ class SoundPointsGenerator(pang.SoundPointsGenerator):
         duration = first_phrase_start
         sound_points: list[pang.SoundPoint] = []
         while duration < sequence_duration:
-            phrase_duration = self._random_number_generator.exponential(
-                self._phrase_mean_duration
+            phrase_duration = (
+                self._random_number_generator.exponential(
+                    self._phrase_mean_duration - self._phrase_minimum_duration
+                )
+                + self._phrase_minimum_duration
             )
             if phrase_duration + duration >= sequence_duration:
                 break
