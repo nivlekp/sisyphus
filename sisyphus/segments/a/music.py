@@ -17,7 +17,6 @@ def main() -> None:
         ),
         time_signature=(4, 4),
     )
-    breakpoint()
     quantizing_metadata = pang.populate_voices_from_sequence(
         pang.Sequence.from_sequences(
             (
