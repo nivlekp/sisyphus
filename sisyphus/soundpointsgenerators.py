@@ -1,7 +1,6 @@
 import numpy as np
 import pang
 
-
 REPEADTED_NOTE_WEIGHT_MULTIPLIER = 0.1
 
 
