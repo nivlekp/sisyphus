@@ -67,3 +67,21 @@ jobs:
         export PATH=/tmp/lilypond-${LILYPOND_VERSION}/bin:/home/runner/bin:$PATH
         export PANG_PATH=${PANG_PATH}
         make test-sections
+    - name: Install LuaLaTeX
+      run: |
+        sudo apt update
+        sudo apt install -y texlive-latex-base texlive-fonts-recommended
+        sudo apt install -y texlive texlive-latex-extra texlive-luatex
+        lualatex --version
+    - name: Test Score
+      run: |
+        export PATH=/tmp/lilypond-${LILYPOND_VERSION}/bin:/home/runner/bin:$PATH
+        export PANG_PATH=${PANG_PATH}
+        make test-score
+        make full-score
+    - name: Upload Full Score
+      uses: actions/upload-artifact@v4
+      with:
+        name: full-score
+        path: sisyphus/builds/score/score.pdf
+        compression-level: 0
