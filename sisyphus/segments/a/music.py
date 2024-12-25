@@ -33,8 +33,10 @@ def main() -> None:
             ),
         ),
     )
+    abjad.attach(abjad.BarLine(":|."), abjad.get.leaf(score, -1))
     metadata = pang.build.collect_metadata(score, quantizing_metadata)
     pang.build.persist(score, metadata)
+    library.symlink_music_ily_from_segment_directory_to_build_directory("a")
 
 
 def _generate_first_sequence() -> pang.Sequence:
