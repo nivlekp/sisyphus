@@ -1,6 +1,8 @@
 import numpy as np
 import pang
 
+REPEADTED_NOTE_WEIGHT_MULTIPLIER = 0.1
+
 
 class SoundPointsGenerator(pang.SoundPointsGenerator):
     def __init__(
@@ -94,7 +96,7 @@ def _generate_next_pitch(
     if pitch is None:
         return int(random_number_generator.choice(list(pitches_set)))
     weights = np.exp(-np.abs(np.array(pitches_set) - pitch) / 2.0)
-    weights[np.array(pitches_set) == pitch] *= 0.25
+    weights[np.array(pitches_set) == pitch] *= REPEADTED_NOTE_WEIGHT_MULTIPLIER
     return int(
         random_number_generator.choice(list(pitches_set), p=weights / weights.sum())
     )
